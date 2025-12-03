@@ -3,10 +3,12 @@
 #ifndef Sensor_temp_h
 #define SenSor_temp_h
 
-#include <cstdint>
+#include <cstdint> #include <cmath>
 
 #include <OneWire.h>
 #include <DallasTemperature.h>
+
+#include "HardwareSerial.h"
 
 
 class Sensor_tmep {
@@ -23,7 +25,7 @@ class Sensor_tmep {
       numberOfDevices = m_sensors.getDeviceCount();
     }
 
-    inline void read() {
+    inline void read() const {
       m_sensors.requestTemperatures();
     }
 

@@ -5,6 +5,8 @@
 
 #include <cstdint>
 
+#include "wiring_private.h"
+
 /*
  * This ESP32 code is created by esp32io.com
  *
@@ -62,9 +64,10 @@ void loop() {
 
 class Sensor_gas{
 
+  private:
+
   static int m_gas_threshold;
 
-  private:
   const uint8_t m_pin_D0;
   const uint8_t m_pin_A0;
 
@@ -74,16 +77,16 @@ class Sensor_gas{
     m_gas_threshold = gas_threshold;
   };
 
-  inline Sensor_gas(uint8_t pin_D0,uint8_t pin_A0) : m_pin_D0(pin_D0),m_pin_A0(pin_A0) {
+  inline Sensor_gas(uint8_t pin_D0,uint8_t pin_A0) : m_pin_D0(pin_D0), m_pin_A0(pin_A0) {
     pinMode(m_pin_A0, INPUT);
     pinMode(m_pin_D0, INPUT);
   }
 
-  inline const int read_A0() { 
+  inline const int read_A0() const { 
     return analogRead(m_pin_A0);
   }
 
-  inline const int read_D0() { 
+  inline const int read_D0() const { 
     return digitalRead(m_pin_D0);
   }
 

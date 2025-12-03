@@ -5,6 +5,9 @@
 
 #include <cstdint>
 
+#include "wiring_private.h"
+
+
 class Sensor_flame{
   private:
 
