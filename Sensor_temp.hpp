@@ -3,7 +3,8 @@
 #ifndef Sensor_temp_h
 #define SenSor_temp_h
 
-#include <cstdint> #include <cmath>
+#include <cstdint> 
+#include <cmath>
 
 #include <OneWire.h>
 #include <DallasTemperature.h>
