@@ -2,7 +2,7 @@
 // #include <ESP32Servo.h>
 #include<espnow.h>
 
-#include "./Sensor_gas.hpp"
+// #include "./Sensor_gas.hpp"
 // #include "./Sensor_temp.hpp"
 // #include "./Sensor_flame.hpp"
 
@@ -31,22 +31,15 @@
 //   }
 // }
 
-Sensor_gas test = Sensor_gas(GPIO12,GPIO14);
+// Sensor_gas test = Sensor_gas(GPIO12,GPIO14);
 
 
 void setup() {
   Sensor_gas::set_gas_threshold(600);
 
-
   Serial.begin(9600);
   // analogReadResolution(10);
   
-  // servoMotor.attach(SERVO_PIN);  // attaches the servo on ESP32 pin
-
-  // pinMode(, INPUT);
-  
-  // test_serveo();
-
   // pinMode(LED_BUILTIN,OUTPUT);
 
   // initialize LCD
@@ -57,16 +50,12 @@ void setup() {
 
 void loop() {
 
-  delay(2000); 
 
-  Serial.println(test.read_D0());
-  Serial.println(test.read_A0());
+  digitalWrite(LED_BUILTIN,HIGH);
+  delay(1000);
 
-  // digitalWrite(LED_BUILTIN,HIGH);
-  // delay(1000);
-  //
-  // digitalWrite(LED_BUILTIN,LOW);
-  // delay(1000);
+  digitalWrite(LED_BUILTIN,LOW);
+  delay(1000);
 
   // set cursor to first column, first row
   // lcd.setCursor(0, 0);
