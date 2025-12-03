@@ -35,7 +35,7 @@
 
 
 void setup() {
-  Sensor_gas::set_gas_threshold(600);
+  // Sensor_gas::set_gas_threshold(600);
 
   Serial.begin(9600);
   // analogReadResolution(10);
