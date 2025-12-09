@@ -20,7 +20,7 @@
 #define THERSH_HOLD 700
 #define MAX_TEMP 55.f
 
-const uint32_t warm_up_time = 60000/10;
+const uint32_t warm_up_time = 60000;
 
 static char *roms_names[5] = {
   "rome 1",
