@@ -1,4 +1,8 @@
+#include <cstdint>
+
+#include <espnow.h>
 #include <core_esp8266_features.h>
+
 #include <LiquidCrystal_I2C.h>
 #include <elapsedMillis.h>
 #include <OneWire.h>
@@ -77,7 +81,6 @@ void lcd_show_roms_temps(const uint8_t count, float *temps, const char **roms){
     lcd.clear();
   }
 }
-
 
 void setup() {
 
