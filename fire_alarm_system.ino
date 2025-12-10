@@ -1,28 +1,28 @@
+#include <core_esp8266_features.h>
 #include <LiquidCrystal_I2C.h>
-#include<espnow.h>
-
+#include <elapsedMillis.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>
-
-#include "Sensor_gas.hpp"
-#include "Sensor_flame.hpp"
 
 #define LCD_COLS 16
 #define LCD_ROWS 2
 
-#define BAZER D3
-#define FLAME D4
-#define GAS_D0 A0
-#define GAS_1 D6
-#define GAS_2 D7
-#define TEMP D5
+#define BAZER    D3
+#define FLAME    D4
+#define GAS_D0   A0
+#define GAS_1    D6
+#define GAS_2    D7
+#define TEMP     D5
+
+#define MAX_TEMP 55.f
 
 #define THERSH_HOLD 700
-#define MAX_TEMP 55.f
+
+#define lcd_show_roms_temps_DELAY 10000
 
 const uint32_t warm_up_time = 60000;
 
-static char *roms_names[5] = {
+static const char *roms_names[5] = {
   "rome 1",
   "rom 2",
   "rom 3",
@@ -31,18 +31,11 @@ static char *roms_names[5] = {
 };
 
 static float roms_temp[5] = {0};
-
 static bool danger = false;
 static int8_t danger_rom = -1;
 static uint8_t dev_cont = 0;
 
-
-LiquidCrystal_I2C lcd(0x27, LCD_COLS, LCD_ROWS);
-
-Sensor_gas gas1 = Sensor_gas(GAS_1);
-Sensor_gas gas2 = Sensor_gas(GAS_2);
-
-Sensor_flame fmale = Sensor_flame(FLAME);
+static LiquidCrystal_I2C lcd(0x27, LCD_COLS, LCD_ROWS);
 
 OneWire oneWire(TEMP);
 DallasTemperature sensors = DallasTemperature(&oneWire);
@@ -77,7 +70,7 @@ void lcd_show_rom_temp(const char *str,const float &temp) {
   lcd.print("c");
 }
 
-void lcd_show_roms_temps(const uint8_t count, float *temps,char **roms){
+void lcd_show_roms_temps(const uint8_t count, float *temps, const char **roms){
   for (uint8_t i = 0; i < count; i++) {
     lcd_show_rom_temp(roms[i],temps[i]);
     delay(lcd_show_roms_temps_DELAY);
@@ -135,11 +128,10 @@ void loop() {
   }
 
   lcd.clear();
-  if (!danger && i != -1) {
-    lcd_show_roms_temps(sizeof(roms_names), roms_temp, roms_names);
-  } else {
-    lcd_show_rom_temp(roms_names[i], roms_temp[i])
-  }
+  if (!danger && danger_rom != -1)
+    lcd_show_roms_temps(sizeof(roms_names), roms_temp,roms_names);
+  else
+    lcd_show_rom_temp(roms_names[danger_rom], roms_temp[danger_rom]);
 
   if (danger) {
     digitalWrite(BAZER, HIGH);
