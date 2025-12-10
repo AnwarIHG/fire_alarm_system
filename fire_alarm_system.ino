@@ -33,6 +33,7 @@ static char *roms_names[5] = {
 static float roms_temp[5] = {0};
 
 static bool danger = false;
+static int8_t danger_rom = -1;
 static uint8_t dev_cont = 0;
 
 
@@ -99,9 +100,11 @@ void setup() {
   // sensors.begin(); 
   // pinMode(LED_BUILTIN,OUTPUT);
 
-  pinMode(GAS_D0, INPUT);
   pinMode(BAZER, OUTPUT);
 
+  pinMode(GAS_D0, INPUT);
+  pinMode(GAS_1, INPUT);
+  pinMode(GAS_2, INPUT);
 }
 
 void loop() {
@@ -115,19 +118,28 @@ void loop() {
     roms_temp[i] = sensors.getTempCByIndex(i); 
     if ( sensors.getTempCByIndex(i) >= MAX_TEMP) {
       danger = true;
+      danger_rom = i;
     }
-  }
-
-  if (analogRead(GAS_D0) >= 655){
-    danger = true;
   }
 
   if (!digitalRead(FLAME)){
     danger = true;
   }
 
+  if (analogRead(GAS_D0) >= 655){
+    danger = true;
+  }
+
+  if (analogRead(GAS_1) >= THERSH_HOLD || analogRead(GAS_2) >= THERSH_HOLD) {
+    danger = true;
+  }
+
   lcd.clear();
-  lcd_show_roms_temps(sizeof(roms_names), roms_temp, roms_names);
+  if (!danger && i != -1) {
+    lcd_show_roms_temps(sizeof(roms_names), roms_temp, roms_names);
+  } else {
+    lcd_show_rom_temp(roms_names[i], roms_temp[i])
+  }
 
   if (danger) {
     digitalWrite(BAZER, HIGH);
@@ -142,4 +154,5 @@ void loop() {
   delay(15);
 
   danger = false;
+  danger_rom = -1;
 }
