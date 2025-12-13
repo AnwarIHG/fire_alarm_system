@@ -19,9 +19,9 @@
 
 #define MAX_TEMP 55.f
 
-#define lcd_show_roms_temps_DELAY 10000
+#define lcd_show_roms_temps_DELAY 3000
 
-const uint32_t warm_up_time = 60000; // 1 min
+const uint32_t warm_up_time = 0; // 60000; // 1 min
 
 static const char *roms_names[5] = {
   "rome 1",
@@ -59,8 +59,7 @@ void lcd_loading(const uint32_t &interval){
     for (int i = 0; i < 3; i++){
       lcd.print(" ");
       delay(250);
-    }
-    delay(777);
+    } delay(777);
   }
 }
 
@@ -118,9 +117,6 @@ void loop() {
 
   sensors.requestTemperatures();
 
-  danger = false;
-  danger_rom = -1;
-
   for (uint8_t i = 0; i < dev_cont; i++) {
     float t = sensors.getTempCByIndex(i); 
 
@@ -144,7 +140,7 @@ void loop() {
 
   lcd.clear();
   if (!danger) {
-    lcd_show_roms_temps(5, roms_temp,roms_names);
+    lcd_show_roms_temps(dev_cont, roms_temp,roms_names);
   } else if (danger_rom != -1) {
     lcd_show_rom_temp(roms_names[danger_rom], roms_temp[danger_rom]);
   } else {
@@ -161,5 +157,8 @@ void loop() {
     digitalWrite(BAZER, LOW);
   }
 
-  delay(10);
+  danger = false;
+  danger_rom = -1;
+
+  delay(15);
 }
