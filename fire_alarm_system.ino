@@ -124,7 +124,7 @@ void loop() {
   for (uint8_t i = 0; i < dev_cont; i++) {
     float t = sensors.getTempCByIndex(i); 
 
-    if (t == DEVICE_DISCONNECTED_C || t == 85.0) {
+    if (t == DEVICE_DISCONNECTED_C) {
       continue;
     }
 
@@ -143,9 +143,9 @@ void loop() {
   }
 
   lcd.clear();
-  if (!danger){
+  if (!danger) {
     lcd_show_roms_temps(5, roms_temp,roms_names);
-  } else if (danger_rom != -1){
+  } else if (danger_rom != -1) {
     lcd_show_rom_temp(roms_names[danger_rom], roms_temp[danger_rom]);
   } else {
     lcd.print("SENSOR ALERT");
