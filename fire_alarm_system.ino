@@ -87,7 +87,7 @@ void setup() {
   // turn on LCD backlight                      
   lcd.backlight();
 
-  // Serial.begin(115200);
+  Serial.begin(115200);
   // pinMode(LED_BUILTIN,OUTPUT);
 
   pinMode(BAZER, OUTPUT);
@@ -123,6 +123,8 @@ void loop() {
     }
 
     roms_temp[i]= t;
+
+    Serial.println(t);
 
     if (t >= MAX_TEMP) {
       danger = true;
