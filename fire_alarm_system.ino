@@ -101,8 +101,7 @@ void setup() {
   pinMode(GAS_1, INPUT);
   pinMode(GAS_2, INPUT);
 
-  sensors.begin(); 
-
+  sensors.begin();
   dev_cont = sensors.getDeviceCount();
 
   if (dev_cont == 0) {
