@@ -97,6 +97,9 @@ void setup() {
 
   pinMode(BAZER, OUTPUT);
 
+
+  pinMode(FLAME, INPUT);
+
   pinMode(GAS_1, INPUT);
   pinMode(GAS_2, INPUT);
 }
