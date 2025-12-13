@@ -138,7 +138,7 @@ void loop() {
 
   lcd.clear();
   if (!danger){
-    lcd_show_roms_temps(sizeof(roms_names), roms_temp,roms_names);
+    lcd_show_roms_temps(5, roms_temp,roms_names);
   } else if (danger_rom != -1){
     lcd_show_rom_temp(roms_names[danger_rom], roms_temp[danger_rom]);
   } else {
