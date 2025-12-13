@@ -30,12 +30,12 @@ static const char *roms_names[5] = {
   "rom 5"
 };
 
-static float roms_temp[5] = {0};
 const uint32_t warm_up_time = 0; // 60000; // 1 min
 static int8_t danger_rom = -1;
 static uint8_t dev_cont = 0;
 static bool danger = false;
 
+static float roms_temp[5] = {0};
 
 static LiquidCrystal_I2C lcd(0x27, LCD_COLS, LCD_ROWS);
 
