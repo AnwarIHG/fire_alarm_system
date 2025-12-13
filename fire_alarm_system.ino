@@ -19,11 +19,9 @@
 
 #define MAX_TEMP 55.f
 
-#define THERSH_HOLD 700
-
 #define lcd_show_roms_temps_DELAY 10000
 
-const uint32_t warm_up_time = 60000;
+const uint32_t warm_up_time = 60000; // 1 min
 
 static const char *roms_names[5] = {
   "rome 1",
@@ -89,19 +87,22 @@ void setup() {
   // turn on LCD backlight                      
   lcd.backlight();
 
-  dev_cont = sensors.getDeviceCount();
-
   // Serial.begin(115200);
-  // sensors.begin(); 
   // pinMode(LED_BUILTIN,OUTPUT);
 
   pinMode(BAZER, OUTPUT);
-
-
   pinMode(FLAME, INPUT);
-
   pinMode(GAS_1, INPUT);
   pinMode(GAS_2, INPUT);
+
+  sensors.begin(); 
+  dev_cont = sensors.getDeviceCount();
+
+  if (dev_cont == 0) {
+    lcd.clear();
+    lcd.print("NO TEMP SENS");
+    while (1); // stop here — hardware problem
+  }
 }
 
 void loop() {
@@ -111,27 +112,36 @@ void loop() {
 
   sensors.requestTemperatures();
 
+  danger = false;
+  danger_rom = -1;
+
   for (uint8_t i = 0; i < dev_cont; i++) {
-    roms_temp[i] = sensors.getTempCByIndex(i); 
-    if ( sensors.getTempCByIndex(i) >= MAX_TEMP) {
+    float t = sensors.getTempCByIndex(i); 
+
+    if (t == DEVICE_DISCONNECTED_C || t == 85.0) {
+      continue;
+    }
+
+    roms_temp[i]= t;
+
+    if (t >= MAX_TEMP) {
       danger = true;
       danger_rom = i;
     }
   }
 
-  if (!digitalRead(FLAME)){
+  if (!digitalRead(GAS_1) || !digitalRead(GAS_2) || !digitalRead(FLAME)) {
     danger = true;
   }
 
-  if (!digitalRead(GAS_1) || digitalRead(GAS_2) >= THERSH_HOLD) {
-    danger = true;
+  lcd.clear();
+  if (!danger){
+    lcd_show_roms_temps(sizeof(roms_names), roms_temp,roms_names);
+  } else if (danger_rom != -1){
+    lcd_show_rom_temp(roms_names[danger_rom], roms_temp[danger_rom]);
+  } else {
+    lcd.print("SENSOR ALERT");
   }
-
-  // lcd.clear();
-  // if (!danger && danger_rom != -1)
-  //   lcd_show_roms_temps(sizeof(roms_names), roms_temp,roms_names);
-  // else
-  //   lcd_show_rom_temp(roms_names[danger_rom], roms_temp[danger_rom]);
 
   if (danger) {
     digitalWrite(BAZER, HIGH);
@@ -143,8 +153,5 @@ void loop() {
     digitalWrite(BAZER, LOW);
   }
 
-  delay(15);
-
-  danger = false;
-  danger_rom = -1;
+  delay(10);
 }
