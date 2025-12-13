@@ -161,5 +161,5 @@ void loop() {
   danger = false;
   danger_rom = -1;
 
-  delay(15);
+  // delay(15);
 }
