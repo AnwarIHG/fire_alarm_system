@@ -97,7 +97,6 @@ void lcd_show_roms_temps(uint8_t count, float *temps, const char **names)
   if (index >= count) {
     index = 0;
   }
-
   lcd_show_rom_temp(names[index], temps[index]);
 
   index++;
@@ -114,6 +113,7 @@ void setup() {
   Wire.begin(D2, D1);
   lcd.init();
   lcd.backlight();
+  lcd.clear();
 
   // pinMode(LED_BUILTIN,OUTPUT);
 
@@ -134,7 +134,6 @@ void setup() {
 
 void loop() {
 
-  lcd.clear();
   lcd_loading(warm_up_time);
 
   sensors.requestTemperatures();
@@ -160,7 +159,6 @@ void loop() {
     danger = true;
   }
 
-  lcd.clear();
   if (!danger && danger_rom == -1) {
     lcd_show_roms_temps(dev_cont, roms_temp,roms_names);
   } else if (danger && danger_rom >= 0) {
