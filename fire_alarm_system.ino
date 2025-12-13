@@ -13,7 +13,6 @@
 
 #define BAZER    D3
 #define FLAME    D4
-#define GAS_D0   A0
 #define GAS_1    D6
 #define GAS_2    D7
 #define TEMP     D5
@@ -98,7 +97,6 @@ void setup() {
 
   pinMode(BAZER, OUTPUT);
 
-  pinMode(GAS_D0, INPUT);
   pinMode(GAS_1, INPUT);
   pinMode(GAS_2, INPUT);
 }
@@ -122,19 +120,15 @@ void loop() {
     danger = true;
   }
 
-  if (analogRead(GAS_D0) >= 655){
+  if (!digitalRead(GAS_1) || digitalRead(GAS_2) >= THERSH_HOLD) {
     danger = true;
   }
 
-  if (analogRead(GAS_1) >= THERSH_HOLD || analogRead(GAS_2) >= THERSH_HOLD) {
-    danger = true;
-  }
-
-  lcd.clear();
-  if (!danger && danger_rom != -1)
-    lcd_show_roms_temps(sizeof(roms_names), roms_temp,roms_names);
-  else
-    lcd_show_rom_temp(roms_names[danger_rom], roms_temp[danger_rom]);
+  // lcd.clear();
+  // if (!danger && danger_rom != -1)
+  //   lcd_show_roms_temps(sizeof(roms_names), roms_temp,roms_names);
+  // else
+  //   lcd_show_rom_temp(roms_names[danger_rom], roms_temp[danger_rom]);
 
   if (danger) {
     digitalWrite(BAZER, HIGH);
