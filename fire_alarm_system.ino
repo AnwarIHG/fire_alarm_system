@@ -79,9 +79,25 @@ void lcd_show_rom_temp(const char *name, float temp) {
 }
 
 void lcd_show_roms_temps(uint8_t count, float *temps, const char **names) {
+  static uint32_t lcdTimer = 0;
+  static uint8_t lcdIndex = 0;
+
   for (uint8_t i = 0; i < count; i++) {
     lcd_show_rom_temp(names[i], temps[i]);
     delay(lcd_show_roms_temps_DELAY);
+  }
+
+  if (millis() - lcdTimer < lcd_show_roms_temps_DELAY) {
+    return; // not time yet
+  }
+
+  lcdTimer = millis();
+
+  lcd_show_rom_temp(names[lcdIndex], temps[lcdIndex]);
+
+  lcdIndex++;
+  if (lcdIndex >= count) {
+    lcdIndex = 0;
   }
 }
 
@@ -161,5 +177,5 @@ void loop() {
   danger = false;
   danger_rom = -1;
 
-  // delay(15);
+  delay(15);
 }
