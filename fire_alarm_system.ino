@@ -64,18 +64,24 @@ void lcd_loading(const uint32_t &interval){
   }
 }
 
-void lcd_show_rom_temp(const char *str,const float &temp) {
-  lcd.print(str);
+void lcd_show_rom_temp(const char *name, float temp) {
+  lcd.clear();
+
+  lcd.setCursor(0, 0);
+  lcd.print(name);
+  lcd.print("        "); // clear leftovers
+
   lcd.setCursor(0, 1);
-  lcd.print(temp);
-  lcd.print("c");
+  lcd.print("Temp: ");
+  lcd.print(temp, 1);
+  lcd.print((char)223); // degree symbol
+  lcd.print("C");
 }
 
-void lcd_show_roms_temps(const uint8_t count, float *temps, const char **roms){
+void lcd_show_roms_temps(uint8_t count, float *temps, const char **names) {
   for (uint8_t i = 0; i < count; i++) {
-    lcd_show_rom_temp(roms[i],temps[i]);
+    lcd_show_rom_temp(names[i], temps[i]);
     delay(lcd_show_roms_temps_DELAY);
-    lcd.clear();
   }
 }
 
