@@ -130,11 +130,12 @@ void setup() {
     lcd.print("NO TEMP SENS");
     while (1); // stop here — hardware problem
   }
+
+  lcd_loading(warm_up_time);
+  lcd.clear();
 }
 
 void loop() {
-
-  lcd_loading(warm_up_time);
 
   sensors.requestTemperatures();
 
@@ -179,6 +180,4 @@ void loop() {
 
   danger = false;
   danger_rom = -1;
-
-  delay(15);
 }
