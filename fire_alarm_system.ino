@@ -30,7 +30,7 @@ static const char *roms_names[5] = {
   "rom 5"
 };
 
-const uint32_t warm_up_time = 60000/10; // 1 min
+const uint32_t warm_up_time = 60000/10; // 0.1 min
 static int8_t danger_rom = -1;
 static uint8_t dev_cont = 0;
 static bool danger = false;
