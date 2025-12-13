@@ -126,7 +126,7 @@ void loop() {
       continue;
     }
 
-    roms_temp[i]= t;
+    roms_temp[i] = t;
 
     Serial.println(t);
 
@@ -143,7 +143,7 @@ void loop() {
   lcd.clear();
   if (!danger && danger_rom == -1) {
     lcd_show_roms_temps(dev_cont, roms_temp,roms_names);
-  } else if (danger && danger_rom != -1) {
+  } else if (danger && danger_rom >= 0) {
     lcd_show_rom_temp(roms_names[danger_rom], roms_temp[danger_rom]);
   } else {
     lcd.print("SENSOR ALERT");
