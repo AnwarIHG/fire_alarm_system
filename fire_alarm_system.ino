@@ -78,26 +78,31 @@ void lcd_show_rom_temp(const char *name, float temp) {
   lcd.print("C");
 }
 
-void lcd_show_roms_temps(uint8_t count, float *temps, const char **names) {
-  static uint32_t lcdTimer = 0;
-  static uint8_t lcdIndex = 0;
+void lcd_show_roms_temps(uint8_t count, float *temps, const char **names)
+{
+  static uint32_t lastUpdate = 0;
+  static uint8_t index = 0;
 
-  for (uint8_t i = 0; i < count; i++) {
-    lcd_show_rom_temp(names[i], temps[i]);
-    delay(lcd_show_roms_temps_DELAY);
-  }
+  if (count == 0) return;
 
-  if (millis() - lcdTimer < lcd_show_roms_temps_DELAY) {
+  uint32_t now = millis();
+
+  if (now - lastUpdate < lcd_show_roms_temps_DELAY) {
     return; // not time yet
   }
 
-  lcdTimer = millis();
+  lastUpdate = now;
 
-  lcd_show_rom_temp(names[lcdIndex], temps[lcdIndex]);
+  // Safety clamp
+  if (index >= count) {
+    index = 0;
+  }
 
-  lcdIndex++;
-  if (lcdIndex >= count) {
-    lcdIndex = 0;
+  lcd_show_rom_temp(names[index], temps[index]);
+
+  index++;
+  if (index >= count) {
+    index = 0;
   }
 }
 
