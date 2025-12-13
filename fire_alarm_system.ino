@@ -1,8 +1,5 @@
 #include <cstdint>
 
-#include <espnow.h>
-#include <core_esp8266_features.h>
-
 #include <LiquidCrystal_I2C.h>
 #include <elapsedMillis.h>
 #include <Wire.h>
@@ -30,7 +27,7 @@ static const char *roms_names[5] = {
   "rom 5"
 };
 
-const uint32_t warm_up_time = 60000/10; // 0.1 min
+const uint32_t warm_up_time = 60000/2; // 0.5 min
 static int8_t danger_rom = -1;
 static uint8_t dev_cont = 0;
 static bool danger = false;
@@ -107,7 +104,7 @@ void lcd_show_roms_temps(uint8_t count, float *temps, const char **names)
 
 void setup() {
 
-  Serial.begin(115200);
+  // Serial.begin(115200);
 
   // initialize LCD
   Wire.begin(D2, D1);
@@ -148,7 +145,7 @@ void loop() {
 
     roms_temp[i] = t;
 
-    Serial.println(t);
+    // Serial.println(t);
 
     if (t >= MAX_TEMP) {
       danger = true;
