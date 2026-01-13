@@ -20,7 +20,7 @@
 #define lcd_show_roms_temps_DELAY 3000
 
 static const char *roms_names[5] = {
-  "rome 1",
+  "rom 1",
   "rom 2",
   "rom 3",
   "rom 4",
